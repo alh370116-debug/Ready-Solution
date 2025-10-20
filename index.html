@@ -1,0 +1,203 @@
+<!doctype html>
+
+<html lang="bn">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ICT Helps — সমস্যা রিপোর্ট</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#7c3aed;--muted:#9aa4b2;--glass:rgba(255,255,255,0.04)}
+    *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial}
+    body{margin:0;min-height:100vh;background:linear-gradient(180deg,#071024 0%, #07182a 60%);color:#e6eef8;display:flex;align-items:center;justify-content:center;padding:28px}
+    .wrap{width:100%;max-width:920px}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .title{display:flex;gap:12px;align-items:center}
+    .logo{width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,var(--accent),#0ea5a4);display:flex;align-items:center;justify-content:center;font-weight:700;color:white;font-size:20px;box-shadow:0 8px 30px rgba(124,58,237,0.18)}
+    h1{font-size:20px;margin:0}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+    .credit{font-size:12px;color:var(--muted);text-align:right}.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:22px;box-shadow:0 6px 30px rgba(2,6,23,0.6);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.03)}
+
+.platforms{display:flex;gap:12px;margin:18px 0}
+.btn-plat{flex:1;padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);cursor:pointer;background:var(--glass);display:flex;flex-direction:column;align-items:flex-start}
+.btn-plat.active{box-shadow:0 8px 30px rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.28);background:linear-gradient(180deg, rgba(124,58,237,0.06), rgba(124,58,237,0.02))}
+.plat-name{font-weight:600}
+.plat-sub{font-size:12px;color:var(--muted)}
+
+form{display:grid;gap:12px;margin-top:6px}
+label{font-size:13px;color:var(--muted)}
+input[type="email"], textarea{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;outline:none}
+textarea{min-height:140px;resize:vertical}
+.row{display:flex;gap:12px}
+.send-row{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.btn{padding:12px 16px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
+.btn.primary{background:linear-gradient(90deg,var(--accent),#06b6d4);color:#021024}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+
+.note{font-size:13px;color:var(--muted)}
+
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(2,6,23,0.6)}
+.modal .inner{background:var(--card);padding:20px;border-radius:12px;max-width:520px;width:92%;text-align:center}
+
+footer{margin-top:14px;text-align:center;color:var(--muted);font-size:13px}
+
+@media(max-width:600px){.platforms{flex-direction:column}}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <div class="logo">ICT</div>
+        <div>
+          <h1>ICT Helps</h1>
+          <p class="lead">স্বত: আল হাসিব — ©2025 ICT Help</p>
+        </div>
+      </div>
+      <div class="credit">স্বত: আল হাসিব<br>©2025 ICT Help</div>
+    </header><section class="card">
+  <p class="note">ডিভাইস সিলেক্ট করুন — নিচ থেকে Android বা Windows সিলেক্ট করুন:</p>
+  <div class="platforms" role="tablist">
+    <button class="btn-plat" id="plat-android" data-plat="Android">
+      <div class="plat-name">Android</div>
+      <div class="plat-sub">অ্যান্ড্রয়েড ডিভাইস (ফোন/ট্যাব)</div>
+    </button>
+    <button class="btn-plat" id="plat-windows" data-plat="Windows">
+      <div class="plat-name">Windows</div>
+      <div class="plat-sub">উইন্ডোজ ডিভাইস (PC/Laptop)</div>
+    </button>
+  </div>
+
+  <form id="reportForm" class="hidden">
+    <div>
+      <label for="userEmail">আপনার ইমেইল (আপনার Gmail দিন)</label>
+      <input id="userEmail" type="email" placeholder="you@example.com" required />
+    </div>
+    <div>
+      <label for="problem">আপনার সমস্যার বৃত্তান্ত (সম্পূর্ণ লিখুন)</label>
+      <textarea id="problem" placeholder="আপনার ডিভাইস/অ্যাপ/অপারেশন সম্পর্কিত সমস্যাটি এখানে লিখুন..." required></textarea>
+    </div>
+
+    <div class="send-row">
+      <div class="note">পাঠানোর জন্য Gmail কম্পোজ উইন্ডো খুলবে — তারপর Send ক্লিক করুন।</div>
+      <div>
+        <button type="button" id="previewBtn" class="btn ghost">Preview</button>
+        <button type="button" id="sendBtn" class="btn primary">Send</button>
+      </div>
+    </div>
+  </form>
+
+</section>
+
+<footer class="card" style="margin-top:12px">এটি একটি ক্লায়েন্ট-সাইড (front-end) অ্যাপ। সরাসরি আপনার পক্ষ থেকে ইমেইল পাঠাতে ব্রাউজার/গmail অনুমতি দরকার।</footer>
+
+  </div>  <!-- modal area -->  <div id="modal" class="modal" style="display:none">
+    <div class="inner">
+      <h3 id="modalTitle">Send via Gmail</h3>
+      <p id="modalText">আমরা আপনার ব্রাউজারে Gmail কম্পোজ উইন্ডো খুলছি — কনটেন্টটি চেক করে Send চাপুন।</p>
+      <div style="margin-top:12px;display:flex;gap:8px;justify-content:center">
+        <button id="iSent" class="btn primary">I Sent It</button>
+        <button id="closeModal" class="btn ghost">Close</button>
+      </div>
+    </div>
+  </div>  <!-- final toast -->  <div id="toast" style="position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,var(--accent),#06b6d4);color:#021024;padding:14px;border-radius:12px;display:none;box-shadow:0 10px 30px rgba(2,6,23,0.6)">Your Problem Is Submitted, Check Your Gmail After Few Moments. It will delay For Heavy Traffic. Stay With Us.</div>  <script>
+    // Basic interactions + validation + Gmail compose link logic
+    const platAndroid = document.getElementById('plat-android');
+    const platWindows = document.getElementById('plat-windows');
+    const form = document.getElementById('reportForm');
+    const sendBtn = document.getElementById('sendBtn');
+    const previewBtn = document.getElementById('previewBtn');
+    const modal = document.getElementById('modal');
+    const modalText = document.getElementById('modalText');
+    const modalTitle = document.getElementById('modalTitle');
+    const closeModal = document.getElementById('closeModal');
+    const iSent = document.getElementById('iSent');
+    const toast = document.getElementById('toast');
+    const userEmail = document.getElementById('userEmail');
+    const problem = document.getElementById('problem');
+
+    let selectedPlatform = null;
+
+    function setActive(el){[
+      platAndroid,platWindows].forEach(b=>b.classList.remove('active'));
+      el.classList.add('active');
+      selectedPlatform = el.dataset.plat;
+      form.classList.remove('hidden');
+      form.style.display = 'block';
+    }
+
+    platAndroid.addEventListener('click',()=>setActive(platAndroid));
+    platWindows.addEventListener('click',()=>setActive(platWindows));
+
+    function isValidEmail(e){return /\S+@\S+\.\S+/.test(e)}
+
+    function buildGmailUrl(to,subject,body){
+      // Gmail web compose url
+      const base = 'https://mail.google.com/mail/?view=cm&fs=1&tf=1';
+      const params = new URLSearchParams({to,su:subject,body});
+      return base + '&' + params.toString();
+    }
+
+    function buildMailto(to,subject,body){
+      return 'mailto:'+encodeURIComponent(to)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+    }
+
+    previewBtn.addEventListener('click',()=>{
+      if(!selectedPlatform){alert('প্রথমে Android বা Windows সিলেক্ট করুন');return}
+      if(!isValidEmail(userEmail.value)){alert('সঠিক একটি ইমেইল ঠিকানা দিন');return}
+      if(!problem.value.trim()){alert('সমস্যার বর্ণনা দিন');return}
+      const subject = `ICT Helps - ${selectedPlatform} Problem`;
+      const body = `User Email: ${userEmail.value}\nPlatform: ${selectedPlatform}\n\nProblem:\n${problem.value}`;
+      // show preview modal
+      modalTitle.textContent = 'Preview — Gmail Compose will open';
+      modalText.textContent = `Subject: ${subject}\n\n${body}`;
+      modal.style.display = 'flex';
+    });
+
+    sendBtn.addEventListener('click',()=>{
+      if(!selectedPlatform){alert('প্রথমে Android বা Windows সিলেক্ট করুন');return}
+      if(!isValidEmail(userEmail.value)){alert('সঠিক একটি ইমেইল ঠিকানা দিন');return}
+      if(!problem.value.trim()){alert('সমস্যার বর্ণনা দিন');return}
+
+      const to = 'alh370116@gmail.com';
+      const subject = `ICT Helps - ${selectedPlatform} Problem`;
+      const body = `From: ${userEmail.value}\nPlatform: ${selectedPlatform}\n\nProblem Details:\n${problem.value}`;
+
+      // Prefer opening Gmail web compose (works if user is logged into Gmail in browser)
+      const gmailUrl = buildGmailUrl(to,subject,body);
+      const mailtoUrl = buildMailto(to,subject,body);
+
+      let opened = false;
+      try{
+        const win = window.open(gmailUrl, '_blank');
+        if(win) opened = true;
+      }catch(e){opened=false}
+      if(!opened){ // fallback to mailto
+        window.location.href = mailtoUrl;
+      }
+      // show modal instructing user to click send in opened compose window
+      modalTitle.textContent = 'Send via Gmail';
+      modalText.textContent = 'একটি Gmail compose উইন্ডো খুলেছে — কনটেন্ট চেক করে Send চাপুন। যদি উইন্ডো না খরে তাহলে আপনার ডিভাইসের মেইল ক্লায়েন্ট খুলে যেতে পারে।';
+      modal.style.display = 'flex';
+    });
+
+    closeModal.addEventListener('click',()=>{modal.style.display='none'});
+
+    iSent.addEventListener('click',()=>{
+      modal.style.display='none';
+      // We cannot verify server-side whether user actually sent email; we accept user's confirmation
+      toast.style.display='block';
+      setTimeout(()=>{toast.style.opacity=0;setTimeout(()=>toast.style.display='none',600)},8000);
+    });
+
+    // small enhancement: press Enter on email field won't submit; keep UX friendly
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter' && (document.activeElement===userEmail)){
+        e.preventDefault(); problem.focus();
+      }
+    })
+
+    // hide form initially
+    form.style.display='none';
+  </script></body>
+</html>
